@@ -19,7 +19,7 @@ all_phrases = welcome_messages + how_are_you_messages + \
 vk_session = vk_api.VkApi(token=TOKEN)
 vk_long_poll = VkLongPoll(vk_session)
 vk = vk_session.get_api()
-i = 1
+sent_message_number = 1
 
 
 class Conversation:
@@ -92,21 +92,21 @@ def weather(place):
 
 
 for event in vk_long_poll.listen():
-    i += 1
+    sent_message_number += 1
     if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.text:
         t1 = event.text
         if t1.split("-")[0].rstrip().lower() == "почтовый индекс" or t1.split("-")[0].lower() == "почтовый индекс ":
             vk.messages.send(user_id=event.user_id, message=map_search(t1.split("-")[1].lstrip(), TARGET_POSTCODE),
-                             random_id=i)
+                             random_id=sent_message_number)
         elif t1.split("-")[0].rstrip().lower() == "где находится" or t1.split("-")[0].lower() == "расположение":
             vk.messages.send(user_id=event.user_id, message=map_search(t1.split("-")[1].lstrip(), TARGET_COORDINATES),
-                             random_id=i)
+                             random_id=sent_message_number)
         elif t1.split("-")[0].rstrip().lower() == 'погода' or t1.split("-")[0].rstrip().lower() == 'погода ':
             vk.messages.send(user_id=event.user_id, message=map_search(t1.split("-")[1].lstrip(), 2),
-                             random_id=i)
+                             random_id=sent_message_number)
         else:
             # noinspection PyBroadException
             try:
-                vk.messages.send(user_id=event.user_id, message=Conversation.reply_to(event), random_id=i)
+                vk.messages.send(user_id=event.user_id, message=Conversation.reply_to(event), random_id=sent_message_number)
             except Exception:
                 pass
