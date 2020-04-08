@@ -1,0 +1,2 @@
+class MapsApi:
+    pass
