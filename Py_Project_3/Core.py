@@ -107,6 +107,7 @@ for event in vk_long_poll.listen():
         else:
             # noinspection PyBroadException
             try:
-                vk.messages.send(user_id=event.user_id, message=Conversation.reply_to(event), random_id=sent_message_number)
+                vk.messages.send(user_id=event.user_id, message=Conversation.reply_to(event),
+                                 random_id=sent_message_number)
             except Exception:
                 pass
